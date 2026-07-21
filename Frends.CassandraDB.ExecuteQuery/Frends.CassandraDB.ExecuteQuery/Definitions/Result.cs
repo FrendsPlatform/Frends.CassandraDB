@@ -30,6 +30,7 @@ public class Result
     /// <summary>
     /// Error details. Only populated when Success is false and ThrowErrorOnFailure is false.
     /// </summary>
+    /// <example>{ Message = "Connection refused", AdditionalInfo = System.Exception }</example>
     public Error Error { get; private set; }
 
     internal Result(bool success, List<Dictionary<string, object>> queryResults, List<string> warnings)
