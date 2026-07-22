@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
 
 namespace Frends.CassandraDB.ExecuteQuery.Definitions;
 
@@ -15,10 +14,11 @@ public class Result
     public bool Success { get; private set; }
 
     /// <summary>
-    /// Query results. Only SELECT query contain values.
+    /// Query results as a list of rows, each represented as a dictionary of column name to value.
+    /// Only SELECT queries contain values.
     /// </summary>
-    /// <example>JToken</example>
-    public JToken QueryResults { get; private set; }
+    /// <example>List { Dictionary { "column1": "value1" } }</example>
+    public List<Dictionary<string, object>> QueryResults { get; private set; }
 
     /// <summary>
     /// Returns the server-side warnings for this query.
@@ -27,10 +27,22 @@ public class Result
     /// <example>List { "warning1", "warning2" }</example>
     public List<string> Warnings { get; private set; }
 
-    internal Result(bool success, JToken queryResults, List<string> warnings)
+    /// <summary>
+    /// Error details. Only populated when Success is false and ThrowErrorOnFailure is false.
+    /// </summary>
+    /// <example>{ Message = "Connection refused", AdditionalInfo = System.Exception }</example>
+    public Error Error { get; private set; }
+
+    internal Result(bool success, List<Dictionary<string, object>> queryResults, List<string> warnings)
     {
         Success = success;
         QueryResults = queryResults;
         Warnings = warnings;
+    }
+
+    internal Result(Error error)
+    {
+        Success = false;
+        Error = error;
     }
 }

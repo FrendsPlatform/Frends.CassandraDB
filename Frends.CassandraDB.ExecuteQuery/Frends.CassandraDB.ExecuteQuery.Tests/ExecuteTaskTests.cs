@@ -58,7 +58,7 @@ public class ExecuteTaskTests
             {
                 try
                 {
-                    CassandraDB.ExecuteQuery(input, default);
+                    CassandraDB.ExecuteQuery(input, new Options(), default);
                     tryConnect = false;
                     break;
                 }
@@ -88,7 +88,7 @@ public class ExecuteTaskTests
             Query = query,
         };
 
-        var result = CassandraDB.ExecuteQuery(input, default);
+        var result = CassandraDB.ExecuteQuery(input, new Options(), default);
         Assert.IsTrue(result.Success);
         Assert.AreEqual(0, result.QueryResults.Count());
     }
@@ -104,7 +104,7 @@ public class ExecuteTaskTests
             Query = "SELECT * FROM store.shopping_cart;",
         };
 
-        var result = CassandraDB.ExecuteQuery(input, default);
+        var result = CassandraDB.ExecuteQuery(input, new Options(), default);
         Assert.IsTrue(result.Success);
         Assert.IsNotNull(result.QueryResults);
         Assert.AreEqual(2, result.QueryResults.Count());
@@ -121,7 +121,7 @@ public class ExecuteTaskTests
             Query = "SELECT count(*) FROM store.shopping_cart;",
         };
 
-        var result = CassandraDB.ExecuteQuery(input, default);
+        var result = CassandraDB.ExecuteQuery(input, new Options(), default);
         Assert.IsTrue(result.Success);
         Assert.AreEqual(1, result.Warnings.Count);
         Assert.AreEqual("Aggregation query used without partition key", result.Warnings[0]);
